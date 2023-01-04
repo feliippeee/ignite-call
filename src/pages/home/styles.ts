@@ -16,14 +16,13 @@ export const Hero = styled('div', {
   [`> ${Heading}`]: {
     '@media(max-width: 600px)': {
       fontSize: '$6xl',
-    }
+    },
   },
 
   [`> ${Text}`]: {
     marginTop: '$2',
     color: '$gray200',
   },
-
 })
 
 export const Preview = styled('div', {
@@ -32,5 +31,5 @@ export const Preview = styled('div', {
 
   '@media(max-width: 600px)': {
     display: 'none',
-  }
+  },
 })
