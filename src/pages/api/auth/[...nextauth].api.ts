@@ -7,9 +7,9 @@ export function BuildNextAuthOptions(
   req: NextApiRequest,
   res: NextApiResponse,
 ): NextAuthOptions {
-  return  {
+  return {
     adapter: PrismaAdapter(req, res),
-  
+
     providers: [
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID ?? '',
@@ -20,18 +20,18 @@ export function BuildNextAuthOptions(
               'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar',
           },
         },
-        profile(profile: GoogleProfile)  {
+        profile(profile: GoogleProfile) {
           return {
             id: profile.sub,
             name: profile.name,
-            username: '', 
+            username: '',
             email: profile.email,
             avatar_url: profile.picture,
           }
-        }
+        },
       }),
     ],
-  
+
     callbacks: {
       async signIn({ account }) {
         if (
@@ -44,15 +44,14 @@ export function BuildNextAuthOptions(
 
       async session({ session, user }) {
         return {
-          ...session, 
+          ...session,
           user,
         }
-      } 
+      },
     },
   }
-  
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  return await NextAuth(req, res, BuildNextAuthOptions(req, res)) 
+  return await NextAuth(req, res, BuildNextAuthOptions(req, res))
 }
