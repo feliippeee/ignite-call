@@ -26,7 +26,7 @@ type CalendarWeeks = CalendarWeek[]
 
 interface BlockedDates {
   blockedWeekDays: number[]
-  blockedDates: Number[]
+  blockedDates: number[]
 }
 
 interface CalendarProps {
