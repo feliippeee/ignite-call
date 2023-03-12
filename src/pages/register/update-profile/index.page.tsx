@@ -3,6 +3,7 @@ import { Avatar, Button, Heading, MultiStep, Text, TextArea } from '@ignite-ui/r
 import { GetServerSideProps } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import { useSession } from 'next-auth/react'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
@@ -42,41 +43,45 @@ export default function UpdateProfile() {
   }
 
   return (
-    <Container>
-      <Header>
-        <Heading as="strong">Bem-vindo ao Ignite Call!</Heading>
-        <Text>
-          Precisamos de algumas informações para criar seu perfil! Ah, você pode
-          editar essas informações depois.
-        </Text>
-        <MultiStep size={4} currentStep={4} />
-      </Header>
+    <>
+      <NextSeo title="Atualize seu perfil | Ignite Call" noindex />
 
-      <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
-        <label>
-          <Text>Foto de perfil</Text>
-          <Avatar 
-            src={session.data?.user.avatar_url} 
-            referrerPolicy="no-referrer"
-            alt={session.data?.user.name} 
-          />
-          
-        </label>
+      <Container>
+        <Header>
+          <Heading as="strong">Bem-vindo ao Ignite Call!</Heading>
+          <Text>
+            Precisamos de algumas informações para criar seu perfil! Ah, você pode
+            editar essas informações depois.
+          </Text>
+          <MultiStep size={4} currentStep={4} />
+        </Header>
 
-        <label>
-          <Text>Sobre você</Text>
-          <TextArea {...register('bio')} />
-          <FormAnnotation size="sm">
-              Fale um pouco sobre você. Isto será exibido em sua página pessoal.
-          </FormAnnotation>
-        </label>
+        <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
+          <label>
+            <Text>Foto de perfil</Text>
+            <Avatar 
+              src={session.data?.user.avatar_url} 
+              referrerPolicy="no-referrer"
+              alt={session.data?.user.name} 
+              />
+            
+          </label>
 
-        <Button type="submit" disabled={isSubmitting}>
-          Finalizar
-          <ArrowRight />
-        </Button>
-      </ProfileBox>
-    </Container>
+          <label>
+            <Text>Sobre você</Text>
+            <TextArea {...register('bio')} />
+            <FormAnnotation size="sm">
+                Fale um pouco sobre você. Isto será exibido em sua página pessoal.
+            </FormAnnotation>
+          </label>
+
+          <Button type="submit" disabled={isSubmitting}>
+            Finalizar
+            <ArrowRight />
+          </Button>
+        </ProfileBox>
+      </Container>
+    </>
   )
 }
 
