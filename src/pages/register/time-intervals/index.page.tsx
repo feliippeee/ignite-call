@@ -169,7 +169,7 @@ export default function TimeIntervals() {
           {errors.intervals && (
             <FormError size="sm">{errors.intervals.message}</FormError>
           )}
-          <Button type="submit">
+          <Button type="submit" disabled={isSubmitting}>
             Próximo passo
             <ArrowRight />
           </Button>
