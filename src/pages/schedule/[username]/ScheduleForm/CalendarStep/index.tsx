@@ -33,45 +33,46 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
     ? dayjs(selectedDate).format('DD[ de ]MMMM')
     : null
 
-     const selectedDateWithoutTime = selectedDate
+  const selectedDateWithoutTime = selectedDate
     ? dayjs(selectedDate).format('YYYY-MM-DD')
     : null
-    
-    const { data: availability } = useQuery<Availability>(
-      ['availability', selectedDateWithoutTime],
-      async () => {
-        const response = await api.get(`/users/${username}/availability`, {
-          params: {
-            date: selectedDateWithoutTime,
-          },
-        })
-        return response.data
-      }, {
-        enabled: !!selectedDate,
-      }
-      ) 
 
-    function handleSelectTime(hour: number) {
-      const dateWithTime = dayjs(selectedDate)
-        .set('hour', hour)
-        .startOf('hour')
-        .toDate()
-  
-      onSelectDateTime(dateWithTime)
-    }
+  const { data: availability } = useQuery<Availability>(
+    ['availability', selectedDateWithoutTime],
+    async () => {
+      const response = await api.get(`/users/${username}/availability`, {
+        params: {
+          date: selectedDateWithoutTime,
+        },
+      })
+      return response.data
+    },
+    {
+      enabled: !!selectedDate,
+    },
+  )
+
+  function handleSelectTime(hour: number) {
+    const dateWithTime = dayjs(selectedDate)
+      .set('hour', hour)
+      .startOf('hour')
+      .toDate()
+
+    onSelectDateTime(dateWithTime)
+  }
 
   return (
     <Container isTimePickerOpen={isDateSelected}>
       <Calendar selectedDate={selectedDate} onDateSelected={setSelectedDate} />
-      
+
       {isDateSelected && (
         <TimePicker>
           <TimePickerHeader>
-          {weekDay} <span>{describedDate}</span>
+            {weekDay} <span>{describedDate}</span>
           </TimePickerHeader>
 
           <TimePickerList>
-          {availability?.possibleTimes.map((hour) => {
+            {availability?.possibleTimes.map((hour) => {
               return (
                 <TimePickerItem
                   key={hour}

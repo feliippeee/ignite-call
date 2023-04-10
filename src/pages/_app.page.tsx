@@ -14,9 +14,9 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>      
+    <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
-      <DefaultSeo
+        <DefaultSeo
           openGraph={{
             type: 'website',
             locale: 'pt_BR',

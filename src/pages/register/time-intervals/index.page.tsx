@@ -26,21 +26,22 @@ import {
 } from './styles'
 
 const timeIntervalsFormSchema = z.object({
-  intervals: z.array( 
-    z.object({
-      weekDay: z.number().min(0).max(6),
-      enabled: z.boolean(),
-      startTime:z.string(),
-      endTime: z.string(),
-  }),
-  )
-  .length(7)
-  .transform((intervals) => intervals.filter((interval) => interval.enabled))
-  .refine(intervals => intervals.length > 0, {
-    message: 'Você precisa selecionar pelo menos um dia da semana!',
+  intervals: z
+    .array(
+      z.object({
+        weekDay: z.number().min(0).max(6),
+        enabled: z.boolean(),
+        startTime: z.string(),
+        endTime: z.string(),
+      }),
+    )
+    .length(7)
+    .transform((intervals) => intervals.filter((interval) => interval.enabled))
+    .refine((intervals) => intervals.length > 0, {
+      message: 'Você precisa selecionar pelo menos um dia da semana!',
     })
-    .transform(intervals => {
-      return intervals.map(interval => {
+    .transform((intervals) => {
+      return intervals.map((interval) => {
         return {
           weekDay: interval.weekDay,
           startTimeInMinutes: convertTimeStringToMinutes(interval.startTime),
@@ -48,14 +49,18 @@ const timeIntervalsFormSchema = z.object({
         }
       })
     })
-    .refine(intervals => {
-      return intervals.every
-      (interval => 
-        interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes,  
-      )
-    }, {
-      message: 'o horário de término deve ser pelo menos 1h maior do que o início.'
-    }),
+    .refine(
+      (intervals) => {
+        return intervals.every(
+          (interval) =>
+            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes,
+        )
+      },
+      {
+        message:
+          'o horário de término deve ser pelo menos 1h maior do que o início.',
+      },
+    ),
 })
 type TimeIntervalsFormInput = z.input<typeof timeIntervalsFormSchema>
 type TimeIntervalsFormOutput = z.output<typeof timeIntervalsFormSchema>
@@ -78,8 +83,8 @@ export default function TimeIntervals() {
         { weekDay: 4, enabled: true, startTime: '08:00', endTime: '18:00' },
         { weekDay: 5, enabled: true, startTime: '08:00', endTime: '18:00' },
         { weekDay: 6, enabled: false, startTime: '08:00', endTime: '18:00' },
-      ]
-    }
+      ],
+    },
   })
 
   const router = useRouter()
@@ -89,31 +94,30 @@ export default function TimeIntervals() {
   const { fields } = useFieldArray({
     control,
     name: 'intervals',
-  }) 
+  })
 
   const intervals = watch('intervals')
 
-
   async function handleSetTimeIntervals(data: any) {
     const { intervals } = data as TimeIntervalsFormOutput
-    
-    await api.post('/users/time-intervals', { 
-      intervals,
-     })
 
-     await router.push('/register/update-profile')
+    await api.post('/users/time-intervals', {
+      intervals,
+    })
+
+    await router.push('/register/update-profile')
   }
 
   return (
     <>
       <NextSeo title="Selecione sua disponibilidade | Ignite Call" noindex />
-   
+
       <Container>
         <Header>
           <Heading as="strong">Quase lá</Heading>
           <Text>
-            Defina o intervalo de horários que você está disponível em cada dia da
-            semana.
+            Defina o intervalo de horários que você está disponível em cada dia
+            da semana.
           </Text>
 
           <MultiStep size={4} currentStep={3} />
@@ -125,12 +129,12 @@ export default function TimeIntervals() {
               return (
                 <IntervalItem key={field.id}>
                   <IntervalDay>
-                    <Controller 
+                    <Controller
                       name={`intervals.${index}.enabled`}
                       control={control}
                       render={({ field }) => {
                         return (
-                          <Checkbox 
+                          <Checkbox
                             onCheckedChange={(checked) => {
                               field.onChange(checked === true)
                             }}
@@ -142,16 +146,26 @@ export default function TimeIntervals() {
                     <Text>{weekDays[field.weekDay]}</Text>
                   </IntervalDay>
                   <IntervalInputs>
-                    <TextInput size="sm" type="time" step={60} disabled={intervals[index].enabled === false} {...register(`intervals.${index}.startTime`)} />
-                    <TextInput size="sm" type="time" step={60} disabled={intervals[index].enabled === false} {...register(`intervals.${index}.endTime`)} />
+                    <TextInput
+                      size="sm"
+                      type="time"
+                      step={60}
+                      disabled={intervals[index].enabled === false}
+                      {...register(`intervals.${index}.startTime`)}
+                    />
+                    <TextInput
+                      size="sm"
+                      type="time"
+                      step={60}
+                      disabled={intervals[index].enabled === false}
+                      {...register(`intervals.${index}.endTime`)}
+                    />
                   </IntervalInputs>
                 </IntervalItem>
               )
             })}
-
-            
           </IntervalsContainer>
-          
+
           {errors.intervals && (
             <FormError size="sm">{errors.intervals.message}</FormError>
           )}

@@ -6,7 +6,7 @@ import { CalendarBlank, Clock } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { api } from '../../../../../lib/axios'
-import { ConfirmForm, FormActions, FormHeader, FormError} from './styles'
+import { ConfirmForm, FormActions, FormHeader, FormError } from './styles'
 
 const confirmFormSchema = z.object({
   name: z.string().min(3, { message: 'O nome precisa no mínimo 3 caracteres' }),
@@ -47,7 +47,6 @@ export function ConfirmStep({
     })
 
     onCancelConfirmation()
-
   }
 
   const describedDate = dayjs(schedulingDate).format('DD[ de ]MMMM[ de ]YYYY')
@@ -74,7 +73,11 @@ export function ConfirmStep({
 
       <label>
         <Text size="sm">Endereço de e-mail</Text>
-        <TextInput type="email" placeholder="johndoe@example.com" {...register('email')} />
+        <TextInput
+          type="email"
+          placeholder="johndoe@example.com"
+          {...register('email')}
+        />
         {errors.email && (
           <FormError size="sm">{errors.email.message}</FormError>
         )}
@@ -89,7 +92,9 @@ export function ConfirmStep({
         <Button type="button" variant="tertiary" onClick={onCancelConfirmation}>
           Cancelar
         </Button>
-        <Button type="submit" disabled={isSubmitting}>Confirmar</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          Confirmar
+        </Button>
       </FormActions>
     </ConfirmForm>
   )

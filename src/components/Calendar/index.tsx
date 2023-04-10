@@ -60,14 +60,12 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
   const username = String(router.query.username)
 
   const { data: blockedDates } = useQuery<BlockedDates>(
-    ['blocked-dates', 
-      currentDate.get('year'),  
-      currentDate.get('month')],
+    ['blocked-dates', currentDate.get('year'), currentDate.get('month')],
     async () => {
       const response = await api.get(`/users/${username}/blocked-dates`, {
         params: {
           year: currentDate.get('year'),
-          month: String(currentDate.get('month') + 1).padStart(2, '0')
+          month: String(currentDate.get('month') + 1).padStart(2, '0'),
         },
       })
       console.log('DateString', response.data)
@@ -76,7 +74,7 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
   )
 
   const calendarWeeks = useMemo(() => {
-     if (!blockedDates) {
+    if (!blockedDates) {
       return []
     }
 
@@ -145,7 +143,6 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
     return calendarWeeks
   }, [currentDate, blockedDates])
 
-
   return (
     <CalendarContainer>
       <CalendarHeader>
@@ -172,7 +169,7 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
           </tr>
         </thead>
         <tbody>
-        {calendarWeeks.map(({ week, days }) => {
+          {calendarWeeks.map(({ week, days }) => {
             return (
               <tr key={week}>
                 {days.map(({ date, disabled }) => {

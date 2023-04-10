@@ -13,7 +13,7 @@ export default function Home() {
         title="Descomplique sua agenda | Ignite Call"
         description="Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre."
       />
-      
+
       <Container>
         <Hero>
           <Heading as="h1" size="4xl">

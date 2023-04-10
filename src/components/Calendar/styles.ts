@@ -20,7 +20,6 @@ export const CalendarTitle = styled(Text, {
   span: {
     color: '$gray200',
   },
-  
 })
 
 export const CalendarActions = styled('div', {
@@ -96,4 +95,3 @@ export const CalendarDay = styled('button', {
     boxShadow: '0 0 0 2px $colors$gray100',
   },
 })
-

@@ -1,4 +1,4 @@
-import { styled, Box, Text } from "@ignite-ui/react"
+import { styled, Box, Text } from '@ignite-ui/react'
 
 export const ProfileBox = styled(Box, {
   marginTop: '$6',
@@ -10,7 +10,7 @@ export const ProfileBox = styled(Box, {
     display: 'flex',
     flexDirection: 'column',
     gap: '$2',
-  }
+  },
 })
 
 export const FormAnnotation = styled(Text, {
